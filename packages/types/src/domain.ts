@@ -80,6 +80,33 @@ export enum Province {
   NU = "NU",
 }
 
+export enum FlagStatus {
+  PENDING = "pending",
+  RESOLVED = "resolved",
+  DISMISSED = "dismissed",
+}
+
+export enum FlagReason {
+  OUTDATED_INFO = "outdated_info",
+  INCORRECT_HOURS = "incorrect_hours",
+  INCORRECT_PRICING = "incorrect_pricing",
+  INAPPROPRIATE_CONTENT = "inappropriate_content",
+  SPAM = "spam",
+  OTHER = "other",
+}
+
+export enum EventType {
+  IMPRESSION = "impression",
+  CLICK = "click",
+  SAVE = "save",
+  UNSAVE = "unsave",
+  FLAG = "flag",
+  SHARE = "share",
+  CALL = "call",
+  DIRECTIONS = "directions",
+  WEBSITE_VISIT = "website_visit",
+}
+
 // Domain entities
 export interface User {
   id: string;
@@ -200,6 +227,63 @@ export interface ProvinceRule {
   updatedAt: string;
 }
 
+// Additional entities
+export interface Favorite {
+  id: string;
+  userId: string;
+  venueId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Flag {
+  id: string;
+  targetType: string;
+  targetId: string;
+  reason: FlagReason;
+  description?: string;
+  userId: string;
+  status: FlagStatus;
+  resolvedBy?: string;
+  resolvedAt?: string;
+  resolutionNotes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EventLog {
+  id: string;
+  userId?: string;
+  type: EventType;
+  targetType: string;
+  targetId: string;
+  sessionId?: string;
+  meta: Record<string, any>;
+  userAgent?: string;
+  ipAddress?: string;
+  latitude?: number;
+  longitude?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AnalyticsSummary {
+  targetId: string;
+  targetType: string;
+  impressions: number;
+  clicks: number;
+  saves: number;
+  shares: number;
+  calls: number;
+  directions: number;
+  websiteVisits: number;
+  clickThroughRate: number;
+  saveRate: number;
+  engagementRate: number;
+  periodStart: string;
+  periodEnd: string;
+}
+
 // Composite types
 export interface VenueWithDetails extends Venue {
   hours: Hours[];
@@ -216,4 +300,18 @@ export interface DealWithVenue extends Deal {
   distanceKm?: number;
   savingsAmount?: number;
   savingsPercentage?: number;
+}
+
+export interface FavoriteWithVenue extends Favorite {
+  venueName: string;
+  venueAddress: string;
+  venueCity: string;
+  venueProvince: string;
+  distanceKm?: number;
+}
+
+export interface FlagWithDetails extends Flag {
+  targetName: string;
+  reporterEmail: string;
+  resolvedByName?: string;
 }

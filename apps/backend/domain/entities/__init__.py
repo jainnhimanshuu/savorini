@@ -1,7 +1,10 @@
 """Domain entities."""
 
+from .analytics import AnalyticsSummary, EventBatch, EventLog
 from .base import BaseEntity, TimestampedEntity
 from .deal import Deal, DealWithVenue
+from .favorite import Favorite, FavoriteWithVenue
+from .flag import Flag, FlagWithDetails
 from .media import Media, MediaUploadRequest, MediaUploadResponse
 from .province_rule import ProvinceRule, DEFAULT_PROVINCE_RULES
 from .user import User, UserProfile
@@ -29,4 +32,14 @@ __all__ = [
     # Province Rules
     "ProvinceRule",
     "DEFAULT_PROVINCE_RULES",
+    # Favorites
+    "Favorite",
+    "FavoriteWithVenue",
+    # Flags/Reports
+    "Flag",
+    "FlagWithDetails",
+    # Analytics
+    "EventLog",
+    "EventBatch",
+    "AnalyticsSummary",
 ]
