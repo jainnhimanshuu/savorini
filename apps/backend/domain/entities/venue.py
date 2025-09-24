@@ -4,7 +4,7 @@ import uuid
 from datetime import datetime, time
 from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from shapely.geometry import Point
 
 from ..enums import DayOfWeek, LicenseType, SecondaryHoursType, VenueStatus
@@ -13,6 +13,8 @@ from .base import BaseEntity
 
 class Venue(BaseEntity):
     """Venue entity."""
+    
+    model_config = ConfigDict(arbitrary_types_allowed=True)
     
     name: str = Field(..., min_length=1, max_length=255)
     slug: Optional[str] = None
