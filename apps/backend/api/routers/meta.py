@@ -1,6 +1,6 @@
 """Metadata routes."""
 
-from typing import Dict, List
+from typing import Dict, List, Union
 
 from fastapi import APIRouter
 
@@ -21,7 +21,7 @@ async def get_province_rules() -> Dict[str, ProvinceRule]:
 
 
 @router.get("/provinces")
-async def get_supported_provinces() -> List[Dict[str, str]]:
+async def get_supported_provinces() -> List[Dict[str, Union[str, bool]]]:
     """Get list of supported provinces."""
     return [
         {
