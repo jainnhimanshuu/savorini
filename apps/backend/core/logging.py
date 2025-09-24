@@ -58,7 +58,9 @@ class LoggingMiddleware:
             return
         
         # Add request context
-        request_id = scope.get("headers", {}).get("x-request-id", "unknown")
+        # Headers are a list of (name, value) tuples
+        headers = dict(scope.get("headers", []))
+        request_id = headers.get("x-request-id", "unknown")
         structlog.contextvars.bind_contextvars(
             request_id=request_id,
             method=scope["method"],

@@ -32,13 +32,22 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     # Startup
     setup_logging()
     await init_database()
-    await init_redis()
+    
+    # Try to initialize Redis, but don't fail if it's not available
+    try:
+        await init_redis()
+    except Exception as e:
+        print(f"Warning: Redis initialization failed: {e}")
+        print("Continuing without Redis cache...")
     
     yield
     
     # Shutdown
     await close_database()
-    await close_redis()
+    try:
+        await close_redis()
+    except Exception:
+        pass  # Ignore Redis close errors
 
 
 def create_app() -> FastAPI:
@@ -94,3 +103,15 @@ def create_app() -> FastAPI:
 
 # Create app instance
 app = create_app()
+
+if __name__ == "__main__":
+    import uvicorn
+    
+    settings = get_settings()
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=settings.is_development,
+        log_level="info" if settings.is_development else "warning",
+    )

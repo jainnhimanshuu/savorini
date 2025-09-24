@@ -20,7 +20,7 @@ class FeedFilters(BaseModel):
     lat: float = Field(..., ge=-90, le=90)
     lng: float = Field(..., ge=-180, le=180)
     radius_km: float = Field(default=10, ge=0.1, le=50)
-    when: str = Field(default="now", regex="^(now|soon|today|tonight)$")
+    when: str = Field(default="now", pattern="^(now|soon|today|tonight)$")
     category: Optional[DealCategory] = None
     province: Optional[Province] = None
     has_food_only: bool = False
@@ -57,7 +57,7 @@ async def get_feed(
     lat: float = Query(..., ge=-90, le=90, description="Latitude"),
     lng: float = Query(..., ge=-180, le=180, description="Longitude"),
     radius_km: float = Query(default=10, ge=0.1, le=50, description="Search radius in km"),
-    when: str = Query(default="now", regex="^(now|soon|today|tonight)$", description="Time filter"),
+    when: str = Query(default="now", pattern="^(now|soon|today|tonight)$", description="Time filter"),
     category: Optional[DealCategory] = Query(None, description="Deal category filter"),
     province: Optional[Province] = Query(None, description="Province filter"),
     has_food_only: bool = Query(False, description="Only venues with food"),
